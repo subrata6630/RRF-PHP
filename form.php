@@ -44,6 +44,26 @@
             $upload = move_uploaded_file($_FILES['photo']['tmp_name'], 'images/' . $file_name);
 
             if ($upload === true) {
+                require_once __DIR__ . '/connection.php';
+                // insert data into the database
+                $password = sha1($password);
+
+                // unnamed parameters
+//                $st = $connection->prepare('INSERT INTO users (email, password, photo) VALUES (?, ?, ?)');
+//                $st->execute([$email, $password, $file_name]);
+
+                // named parameters
+                $st = $connection->prepare('INSERT INTO users (email, password, photo) VALUES (:email, :password, :photo)');
+//                $st->execute([
+//                   ':email' => $email,
+//                   ':password' => $password,
+//                   ':photo' => $file_name,
+//                ]);
+                $st->bindValue('email', $email, PDO::PARAM_STR);
+                $st->bindValue('password', $password, PDO::PARAM_STR);
+                $st->bindValue('photo', $file_name, PDO::PARAM_STR);
+                $st->execute();
+
                 echo 'Upload successful.<br/>';
             }
         }
