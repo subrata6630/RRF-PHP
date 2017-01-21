@@ -1,5 +1,5 @@
-<form action='?id=<?php echo $data['id']; ?>' method='post' enctype="multipart/form-data">
-    <div class="form-group">
+<form action='id=<?php echo $data['id']; ?>' method='post' enctype="multipart/form-data">
+    <div class="form-group">?
         <label for='number'>Password: </label>
         <input type='password' class='form-control' name='password'>
     </div>

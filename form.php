@@ -28,13 +28,16 @@
         <h1>RRF PHP 101</h1>
         <?php
         if (isset($_POST['register'])) {
+            $error = false;
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
             if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                $error = true;
                 echo 'invalid email<br/>';
             }
 
             if (strlen($password) < 6) {
+                $error = true;
                 echo 'password must be at least 6 chars<br/>';
             }
 
@@ -43,7 +46,7 @@
             $file_name = time() . '.' . $file_ext;
             $upload = move_uploaded_file($_FILES['photo']['tmp_name'], 'images/' . $file_name);
 
-            if ($upload === true) {
+            if ($upload === true && $error === false) {
                 require_once __DIR__ . '/connection.php';
                 // insert data into the database
                 $password = sha1($password);

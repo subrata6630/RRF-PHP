@@ -28,14 +28,25 @@
         <h1>RRF PHP 101</h1>
         <?php
         require_once __DIR__ . '/connection.php';
+
+        if(isset($_GET['action']) && $_GET['action'] === 'delete' && !empty($_GET['id'])) {
+            $st = $connection->prepare('DELETE FROM users WHERE id = :id');
+            $st->bindValue('id', $_GET['id'], PDO::PARAM_INT);
+            $st->execute();
+
+            echo '<div class="alert alert-success">User deleted.</div>';
+        }
+
         $st = $connection->prepare('SELECT * FROM users');
         $data = $st->execute();
         $results = $st->fetchAll();
+
         ?>
         <table class="table table-bordered">
             <thead>
                 <td>Email</td>
                 <td>Photo</td>
+                <td>Action</td>
             </thead>
             <tbody>
             <?php
@@ -44,6 +55,7 @@
                 <tr>
                     <td><?php echo $user['email']; ?></td>
                     <td><a href="images/<?php echo $user['photo']; ?>">Photo</a></td>
+                    <td><a href="?action=delete&id=<?php echo $user['id']; ?>">Delete</a></td>
                 </tr>
             <?php } ?>
             </tbody>
