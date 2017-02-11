@@ -3,11 +3,13 @@ class User {
     private $email;
     private $password;
     public $photo;
+    private $db;
 
-    public function __construct($email, $password)
+    public function __construct($email, $password, Database $db)
     {
         $this->email = $email;
         $this->password = $password;
+        $this->db = $db;
     }
 
     public function getEmail()
@@ -36,6 +38,8 @@ class User {
     {
         $this->validate();
         // db operation
+        $this->db->create();
+
         echo 'User registered.';
     }
 
@@ -45,12 +49,12 @@ class User {
         $this->validatePassword($this->password);
     }
 
-    private function validateEmail($email)
+    protected function validateEmail($email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    private function validatePassword($password)
+    protected function validatePassword($password)
     {
         return (6 < strlen($password));
     }
