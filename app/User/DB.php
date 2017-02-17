@@ -1,6 +1,6 @@
 <?php
 
-namespace User;
+namespace App\User;
 
 class DB {
     public function __construct()
